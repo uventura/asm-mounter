@@ -1,41 +1,6 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <map>
-#include <sstream>
-#include <string>
-#include <utility>
-#include <bitset>
-#include <math.h>
-#include <exception>
+#include "src/mainHeader.hpp"
+#include "dep/nlohmann/json.hpp"
 
-#include "nlohmann/json.hpp"
-//////////////////////////////////////////////////////////
-struct AsmMounterConvertError:public std::exception
-{
-	const char* what() const throw()
-	{
-		return "[MOUNTER ERROR] Cannot Convert this number.";
-	}
-};
-
-struct AsmMounterWrongInstruction:public std::exception
-{
-	const char* what() const throw()
-	{
-		return "[MOUNTER ERROR] Wrong Instruction Was Given.";
-	}
-};
-
-struct AsmMounterWrongData:public std::exception
-{
-	const char* what() const throw()
-	{
-		return "[MOUNTER ERROR] A Wrong Data Was Given.";
-	}
-};
-
-//////////////////////////////////////////////////////////
 struct Instruction
 {
 	//[TODO] => std::vector<std::string> prefixes;
@@ -45,50 +10,8 @@ struct Instruction
 	std::vector<std::string> hex_repr;
 };
 
-// binarie_value: Binarie Value String.
-// bit_num: Bit's number used.
-/*std::string binToHex(std::string binarie_value, uint32_t bit_num)
-{
-	if(binarie_value.size() > bit_num || binarie_value.size()==0)
-		return "";
-
-	uint32_t countZeros = bit_num - binarie_value.size();
-	std::string zerosMissing="";
-
-	// O(n)
-	for(uint32_t i=0;i<countZeros;++i)
-		zerosMissing+='0';
-	binarie_value = zerosMissing+binarie_value;
-
-	std::map<std::string, std::string> bin_hex_table;
-	bin_hex_table["0000"]="0";
-	bin_hex_table["0001"]="1";
-	bin_hex_table["0010"]="2";
-	bin_hex_table["0011"]="3";
-	bin_hex_table["0100"]="4";
-	bin_hex_table["0101"]="5";
-	bin_hex_table["0110"]="6";
-	bin_hex_table["0111"]="7";
-	bin_hex_table["1000"]="8";
-	bin_hex_table["1001"]="9";
-	bin_hex_table["1010"]="A";
-	bin_hex_table["1011"]="B";
-	bin_hex_table["1100"]="C";
-	bin_hex_table["1101"]="D";
-	bin_hex_table["1110"]="E";
-	bin_hex_table["1111"]="F";
-
-	std::string result = "";
-	std::string current_val = "";
-
-	// ~O(nlog(n)) -> Disregarding the + operator.
-	for(uint32_t i=0;i<binarie_value.size();i+=4)
-		result += bin_hex_table[binarie_value.substr(i,4)];
-
-	return result;
-}*/
-
-std::vector<std::string> decomposition(std::string inst)
+// Decompose Instruction in a Vector
+std::vector<std::string> decompInstruction(std::string inst)
 {
 	std::string word="";
 	std::vector<std::string> result;
@@ -114,7 +37,7 @@ std::vector<std::string> decomposition(std::string inst)
 std::string decToHex(uint32_t decimal, uint32_t bit_size)
 {
 	if((uint32_t)log2(decimal) >= bit_size)
-		throw AsmMounterConvertError();
+		throw AsmMounter::ConvertError();
 	
 	///////////////////////////////////////////////////////////////
 	std::string result="";
@@ -143,7 +66,7 @@ std::string twoComplement(std::string decimal_value, uint32_t bit_size)
 	long long value = std::stoi(decimal_value);
 
 	if(abs(value) > max_value)
-		throw AsmMounterConvertError();
+		throw AsmMounter::BitSizeError();
 	
 	return value>=0 ? decToHex(value, bit_size) : decToHex(max_value + value, bit_size);
 }	
@@ -153,7 +76,7 @@ Instruction buildInstruction(std::vector<std::string> inst_decomp, nlohmann::jso
 	Instruction result;
 	result.inst_name = inst_decomp[0];
 	if(config_file["instruction"][result.inst_name].is_null())
-		throw AsmMounterWrongInstruction();
+		throw AsmMounter::WrongInstruction();
 
 	std::string type = config_file["instruction"][result.inst_name]["type"];
 	uint32_t current_pos = 0;
@@ -172,7 +95,7 @@ Instruction buildInstruction(std::vector<std::string> inst_decomp, nlohmann::jso
 			else if( config_file["fields"][inst_field]["default_set"].size() != 0 &&
 				config_file["fields"][inst_field]["default_set"][current_data].is_null())
 			{
-				throw AsmMounterWrongData();
+				throw AsmMounter::WrongData();
 			}
 			else if(config_file["fields"][inst_field]["default_set"].size() == 0)
 			{
@@ -180,13 +103,13 @@ Instruction buildInstruction(std::vector<std::string> inst_decomp, nlohmann::jso
 				{
 					result.data.push_back({twoComplement(current_data, config_file["fields"][inst_field]["bits"]), inst_field});
 				}
-				catch(AsmMounterConvertError& error)
+				catch(AsmMounter::BitSizeError& error)
 				{
-					throw AsmMounterConvertError();
+					throw AsmMounter::BitSizeError();
 				}
 				catch(...)
 				{
-					throw AsmMounterWrongData();
+					throw AsmMounter::WrongData();
 				}
 			}
 			else
@@ -222,10 +145,10 @@ int main()
     nlohmann::json configJson;
     configFile>>configJson;
 
-	std::string inst = "addi r15 r10 r12 0";
+	std::string inst = "addi r15 r10 r12 0aaa";
 	try
 	{
-		Instruction current = buildInstruction(decomposition(inst), configJson);
+		Instruction current = buildInstruction(decompInstruction(inst), configJson);
 
 		for(auto i:current.data)
 		{	
