@@ -3,10 +3,21 @@
 
 namespace AsmMounter
 {
+    enum State{NO_ERROR, WITH_ERRORS, WARNING};
+    struct ErrorStatus;
+
+    // Errors Type
     struct ConvertError;
     struct BitSizeError;
     struct WrongInstruction;
     struct WrongData;
+    struct MissingData;
+};
+
+struct AsmMounter::ErrorStatus
+{
+    AsmMounter::State status;
+    std::string msg="";
 };
 
 struct AsmMounter::ConvertError:public std::exception
@@ -38,5 +49,13 @@ struct AsmMounter::WrongData:public std::exception
 	const char* what() const throw()
 	{
 		return "[MOUNTER ERROR] A Wrong Data Was Given.";
+	}
+};
+
+struct AsmMounter::MissingData:public std::exception
+{
+	const char* what() const throw()
+	{
+		return "[MOUNTER ERROR] Missing Data on Instruction.";
 	}
 };

@@ -1,0 +1,101 @@
+{
+	"bitset":16,
+	
+	"fields":{
+		"opcode":{
+			"bits":4,
+			"default_set":{}
+		},
+
+		"reg":{
+			"bits":4,
+			"default_set":{
+				"r0":"0",
+				"r1":"1",				
+				"r2":"2",
+				"r3":"3",
+				"r4":"4",
+				"r5":"5",
+				"r6":"6",
+				"r7":"7",
+				"r8":"8",
+				"r9":"9",
+				"r10":"A",
+				"r11":"B",
+				"r12":"C",
+				"r13":"D",
+				"r14":"E",
+				"r15":"F"
+			}
+		},
+
+		"imm":{
+			"bits":16,
+			"default_set":{}		
+		}
+	},
+
+	"struct_inst":
+	{
+		"default":["opcode", "reg","reg","reg","imm"],
+		"branch": ["opcode", "reg", "reg","null4","imm"],
+		"jl": ["opcode","reg","null4","null4","imm"],
+		"jlr":["opdcode","reg","reg","null4","imm"]
+	},
+
+	"instruction":
+	{
+		"addi":{
+            "opcode":"0",
+			"type":"default"
+		},
+		"subi":{
+			"opcode":"1",
+			"type":"default"
+		},
+		"andi":{
+			"opcode":"2",
+			"type":"default"
+		},
+		"ori":{
+			"opcode":"3",
+			"type":"default"
+		},
+		"xori":{
+			"opcode":"4",
+			"type":"default"
+		},
+		"beq":{
+			"opcode":"5",
+			"type":"branch"
+		},
+		"bne":{
+			"opcode":"6",
+			"type":"branch"
+		},
+		"ble":{
+			"opcode":"7",
+			"type":"branch"
+		},
+		"bleu":{
+			"opcode":"8",
+			"type":"branch"
+		},
+		"bgt":{
+			"opcode":"9",
+			"type":"branch"
+		},
+		"bgtu":{
+			"opcode":"A",
+			"type":"branch"
+		},
+		"jal":{
+			"opcode":"B",
+			"type":"jl"
+		},
+		"jalr":{
+			"opcode":"C",
+			"type":"jlr"
+		}
+	}
+}
