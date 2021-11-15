@@ -10,7 +10,7 @@
 
 <p>You must define:</p>
 <ul>
-    <li>"bitset": Bits processor</li>
+    <li>"bitset": Bits from processor</li>
     <li>"fields": Fields that can compose one word</li>
     <li>"opcode" on "fields": Bits that describes how many instructions you have, 3bits describes 2³ instructions</li>
     <li>"struct_inst":  Instructions Type</li>
