@@ -5,7 +5,7 @@
 </p>
 
 <h3>
-    How Create The Json File?
+    How To Create The Json File?
 </h3>
 
 <p>You must define:</p>
@@ -21,7 +21,7 @@
 <br>
 <p>!! Using "null"+number, you can define null fields with "number" bits</p>
 <br>
-<p>How Compile the example?</p>
+<p>How To Compile the example?</p>
 <code>g++ asmMounterZepto16.cpp -o main -O2 -Wall -std=c++17 -lm</code>
 </br>
 <p>To Execute:</p>
