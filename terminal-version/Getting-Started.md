@@ -17,4 +17,12 @@
     <li>"instruction": Each instruction name and its structure</lo>
 </ul>
 <br>
-<p> Use "zepto16.json" to know how to build an assembly mounter.</p>
+<p>Use "zepto16.json" to know how to build an assembly mounter.</p>
+<br>
+<p>!! Using "null"+number, you can define null fields with "number" bits</p>
+<br>
+<p>How Compile the example?</p>
+<code>g++ asmMounterZepto16.cpp -o main -O2 -Wall -std=c++17 -lm</code>
+</br>
+<p>To Execute:</p>
+<code>./main</code>
