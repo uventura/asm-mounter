@@ -6,12 +6,15 @@ namespace AsmMounter
     enum State{NO_ERROR, WITH_ERRORS, WARNING};
     struct ErrorStatus;
 
-    // Errors Type
-    struct ConvertError;
-    struct BitSizeError;
-    struct WrongInstruction;
-    struct WrongData;
-    struct MissingData;
+    namespace Error
+    {
+        // Errors Type
+        struct Conversion;
+        struct BitSize;
+        struct WrongInstruction;
+        struct WrongData;
+        struct MissingData;
+    }
 };
 
 struct AsmMounter::ErrorStatus
@@ -20,7 +23,7 @@ struct AsmMounter::ErrorStatus
     std::string msg="";
 };
 
-struct AsmMounter::ConvertError:public std::exception
+struct AsmMounter::Error::Conversion:public std::exception
 {
 	const char* what() const throw()
 	{
@@ -28,7 +31,7 @@ struct AsmMounter::ConvertError:public std::exception
 	}
 };
 
-struct AsmMounter::BitSizeError:public std::exception
+struct AsmMounter::Error::BitSize:public std::exception
 {
     const char* what() const throw()
 	{
@@ -36,7 +39,7 @@ struct AsmMounter::BitSizeError:public std::exception
 	}
 };
 
-struct AsmMounter::WrongInstruction:public std::exception
+struct AsmMounter::Error::WrongInstruction:public std::exception
 {
 	const char* what() const throw()
 	{
@@ -44,7 +47,7 @@ struct AsmMounter::WrongInstruction:public std::exception
 	}
 };
 
-struct AsmMounter::WrongData:public std::exception
+struct AsmMounter::Error::WrongData:public std::exception
 {
 	const char* what() const throw()
 	{
@@ -52,7 +55,7 @@ struct AsmMounter::WrongData:public std::exception
 	}
 };
 
-struct AsmMounter::MissingData:public std::exception
+struct AsmMounter::Error::MissingData:public std::exception
 {
 	const char* what() const throw()
 	{

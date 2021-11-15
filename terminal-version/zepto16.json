@@ -38,7 +38,7 @@
 	"struct_inst":
 	{
 		"default":["opcode", "reg","reg","reg","imm"],
-		"branch": ["opcode", "reg", "reg","null4","imm"],
+		"branch": ["opcode", "null4","reg", "reg","imm"],
 		"jl": ["opcode","reg","null4","null4","imm"],
 		"jlr":["opdcode","reg","reg","null4","imm"]
 	},

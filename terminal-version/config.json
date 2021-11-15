@@ -1,9 +1,0 @@
-{
-	"bitset":16,
-	"fields":{
-		"opcode":{
-			"bits":4,
-			"default":{}
-		}
-	}
-}

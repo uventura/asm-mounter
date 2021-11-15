@@ -11,7 +11,7 @@ namespace AsmMounter
     //| MOUNTER MATH FUNCTIONS |
     //==========================
 
-    bool IsNumeric(std::string data);
+    bool IsNumeric(std::string data, bool is_signed = true);
     std::string DecToHex(uint32_t decimal, uint32_t bit_size);
 
     // Return the two complement in Hexadecimal.
@@ -32,18 +32,26 @@ namespace AsmMounter
 }
 
 
-bool AsmMounter::IsNumeric(std::string data)
+bool AsmMounter::IsNumeric(std::string data, bool is_signed)
 {
-	for(uint32_t pos=0;pos<data.size();++pos)
+    if(data.size() == 0)
+    {
+        return false;
+    }
+
+    uint32_t pos=(data[0]=='-'?1 && is_signed:0);
+
+	for(;pos<data.size();++pos)
 		if(not(data[pos] >= '0' && data[pos] <= '9'))
 			return false;
+
 	return true;
 }
 
 std::string AsmMounter::DecToHex(uint32_t decimal, uint32_t bit_size)
 {
 	if((uint32_t)log2(decimal) >= bit_size)
-		throw AsmMounter::ConvertError();
+		throw AsmMounter::Error::Conversion();
 	
 	std::string result="";
 	uint32_t current=decimal, rem;
@@ -67,13 +75,13 @@ std::string AsmMounter::DecToHex(uint32_t decimal, uint32_t bit_size)
 std::string AsmMounter::TwoComplement(std::string decimal_value, uint32_t bit_size)
 {
 	if(not IsNumeric(decimal_value))
-		throw AsmMounter::WrongData();
+		throw AsmMounter::Error::WrongData();
 
 	uint32_t max_value = pow(2, bit_size);
 	long long value = std::stoi(decimal_value);
 
 	if(abs(value) > max_value)
-		throw AsmMounter::BitSizeError();
+		throw AsmMounter::Error::BitSize();
 	
 	return value>=0 ? DecToHex(value, bit_size) : DecToHex(max_value + value, bit_size);
 }
@@ -107,27 +115,27 @@ AsmMounter::Instruction AsmMounter::BuildInstruction(std::vector<std::string> in
 	AsmMounter::Instruction result;
 	result.inst_name = inst_decomp[0];
 	if(config_file["instruction"][result.inst_name].is_null())
-		throw AsmMounter::WrongInstruction();
+		throw AsmMounter::Error::WrongInstruction();
 
 	std::string type = config_file["instruction"][result.inst_name]["type"];
 	uint32_t current_pos = 0;
 
     if(config_file["struct_inst"][type].size() < inst_decomp.size())
     {
-        throw AsmMounter::WrongData();
+        throw AsmMounter::Error::WrongData();
     }
 
 	for(auto inst_type_element: config_file["struct_inst"][type])
 	{
         if(current_pos >= inst_decomp.size())
-            throw AsmMounter::MissingData();
+            throw AsmMounter::Error::MissingData();
 
 		if(current_pos != 0)
 		{
 			std::string current_data = inst_decomp[current_pos];
 			std::string inst_field = inst_type_element; 
 
-			if(inst_field.substr(0,4)=="null" && IsNumeric(inst_field.substr(4)))
+			if(inst_field.substr(0,4)=="null" && IsNumeric(inst_field.substr(4), false))
 			{
 				result.data.push_back({DecToHex(0,std::stoi(inst_field.substr(4))),"null"});
                 current_pos -= 1;
@@ -137,7 +145,7 @@ AsmMounter::Instruction AsmMounter::BuildInstruction(std::vector<std::string> in
             ||     (config_file["fields"][inst_field]["default_set"].size() != 0    // Found The Field But Has a Wrong Data
             &&      config_file["fields"][inst_field]["default_set"][current_data].is_null()))
             {
-                throw AsmMounter::WrongData();
+                throw AsmMounter::Error::WrongData();
             }
 			else if(config_file["fields"][inst_field]["default_set"].size() == 0)
 			{
@@ -145,13 +153,13 @@ AsmMounter::Instruction AsmMounter::BuildInstruction(std::vector<std::string> in
 				{
 					result.data.push_back({TwoComplement(current_data, config_file["fields"][inst_field]["bits"]), inst_field});
 				}
-				catch(AsmMounter::BitSizeError& error)
+				catch(AsmMounter::Error::BitSize& error)
 				{
-					throw AsmMounter::BitSizeError();
+					throw AsmMounter::Error::BitSize();
 				}
 				catch(...)
 				{
-					throw AsmMounter::WrongData();
+					throw AsmMounter::Error::WrongData();
 				}
 			}
 			else
@@ -180,7 +188,7 @@ AsmMounter::Instruction AsmMounter::AnalyzeInstruction(std::string inst, nlohman
         std::vector<std::string> decomp_inst = AsmMounter::DecompInstruction(inst);
         
         if(decomp_inst.size() == 0)
-            return Instruction();
+            return AsmMounter::Instruction();
 
 		current = AsmMounter::BuildInstruction(decomp_inst, config_file);
 	}
@@ -188,7 +196,7 @@ AsmMounter::Instruction AsmMounter::AnalyzeInstruction(std::string inst, nlohman
 	{
         error_handling.status = AsmMounter::State::WITH_ERRORS;
 		error_handling.msg = error.what();
-        return Instruction();
+        return AsmMounter::Instruction();
     }
 
     return current;
@@ -210,7 +218,7 @@ std::string AsmMounter::GetHexInstructionStr(std::string inst, nlohmann::json co
     return "";
 }
 
-std::vector<std::string> GetHexInstructionVec(std::string inst, nlohmann::json config_file, AsmMounter::ErrorStatus& error_handling)
+std::vector<std::string> AsmMounter::GetHexInstructionVec(std::string inst, nlohmann::json config_file, AsmMounter::ErrorStatus& error_handling)
 {
     AsmMounter::Instruction current = AsmMounter::AnalyzeInstruction(inst, config_file, error_handling);
     std::vector<std::string> result;

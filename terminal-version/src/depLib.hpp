@@ -8,3 +8,4 @@
 #include <bitset>
 #include <math.h>
 #include <exception>
+#include <algorithm>
