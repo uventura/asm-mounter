@@ -30,9 +30,9 @@ int main()
 			std::vector<std::string> hex_vec = AsmMounter::GetHexInstructionVec(current_line, config_json, error);
 			std::reverse(hex_vec.begin(), hex_vec.end());
 
-			if(!error.status)
+			if(!error.status && hex_vec.size()>=4)
 				std::cout<<"0X"<<hex_vec[0]<<" "<<hex_vec[1]<<hex_vec[2]<<hex_vec[3]<<hex_vec[4]<<"\n";
-			else
+			else if(error.status == AsmMounter::State::WITH_ERRORS)
 				std::cout<<error.msg<<"\n";
 		}
 

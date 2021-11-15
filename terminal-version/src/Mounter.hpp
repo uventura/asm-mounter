@@ -106,7 +106,7 @@ std::vector<std::string> AsmMounter::DecompInstruction(std::string inst)
 	}
 
 	if(word != "") result.push_back(word);
-
+    
 	return result;
 }	
 
