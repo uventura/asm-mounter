@@ -14,8 +14,8 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:#2D232E;
-color: #F1F0EA;
+   <string notr="true">background-color:#262626;
+color: #C9CEBD;
 font-size:15px;</string>
   </property>
   <widget class="QWidget" name="mainProgramWidget">
@@ -40,7 +40,11 @@ font-size:15px;</string>
       <widget class="QWidget" name="verticalLayoutWidget_2">
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="QTreeView" name="FileTree"/>
+         <widget class="QTreeView" name="FileTree">
+          <property name="styleSheet">
+           <string notr="true">background-color:#252627;</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -77,7 +81,7 @@ font-size:15px;</string>
              <item row="0" column="0">
               <widget class="QListView" name="listView">
                <property name="styleSheet">
-                <string notr="true">background-color:#474448;</string>
+                <string notr="true">background-color:#252627;</string>
                </property>
               </widget>
              </item>
@@ -89,7 +93,11 @@ font-size:15px;</string>
             </attribute>
             <layout class="QGridLayout" name="gridLayout_3">
              <item row="0" column="0">
-              <widget class="QTextEdit" name="textEdit"/>
+              <widget class="QTextEdit" name="textEdit">
+               <property name="styleSheet">
+                <string notr="true">background-color:#262626;</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </widget>

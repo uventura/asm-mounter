@@ -65,8 +65,7 @@ OBJECTS       = codeeditor.o \
 		moc_codeeditor.o \
 		moc_highlighter.o \
 		moc_mainwindow.o
-DIST          = ../AsmMounter/editorScript.js \
-		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/spec_pre.prf \
+DIST          = /home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/common/unix.conf \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/common/linux.conf \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/common/sanitize.conf \
@@ -183,7 +182,6 @@ DIST          = ../AsmMounter/editorScript.js \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/qt_config.prf \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/spec_post.prf \
-		../AsmMounter/.qmake.stash \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/toolchain.prf \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/default_pre.prf \
@@ -339,7 +337,6 @@ Makefile: ../AsmMounter/AsmMounter.pro /home/ualiton/Qt/6.2.1/gcc_64/mkspecs/lin
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/qt_config.prf \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/toolchain.prf \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/default_pre.prf \
@@ -482,7 +479,6 @@ Makefile: ../AsmMounter/AsmMounter.pro /home/ualiton/Qt/6.2.1/gcc_64/mkspecs/lin
 /home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/qt_config.prf:
 /home/ualiton/Qt/6.2.1/gcc_64/mkspecs/linux-g++/qmake.conf:
 /home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/spec_post.prf:
-.qmake.stash:
 /home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/exclusive_builds.prf:
 /home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/toolchain.prf:
 /home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/default_pre.prf:
@@ -1773,55 +1769,7 @@ mainwindow.o: ../AsmMounter/mainwindow.cpp ../AsmMounter/mainwindow.h \
 		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/QFontMetrics \
 		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/QTextBlock \
 		../AsmMounter/json.h \
-		ui_mainwindow.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QVariant \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/QAction \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qaction.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QApplication \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qapplication.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcoreapplication.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qeventloop.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qfuture.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qfutureinterface.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qmutex.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qresultstore.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qfuture_impl.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qthreadpool.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qrunnable.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qexception.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qapplicationpermission.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcoreapplication_platform.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qguiapplication.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qinputmethod.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qguiapplication_platform.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QHeaderView \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qheaderview.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qabstractitemview.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qabstractitemmodel.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qitemselectionmodel.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qstyleoption.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qabstractspinbox.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qvalidator.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qslider.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qabstractslider.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qstyle.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qtabbar.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qrubberband.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QListView \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qlistview.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QMenu \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qmenu.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QMenuBar \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qmenubar.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QSplitter \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qsplitter.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QStatusBar \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qstatusbar.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QTabWidget \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QTreeView \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qtreeview.h \
-		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QVBoxLayout
+		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../AsmMounter/mainwindow.cpp
 
 moc_codeeditor.o: moc_codeeditor.cpp 

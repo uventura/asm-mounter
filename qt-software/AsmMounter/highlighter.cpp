@@ -27,13 +27,13 @@ Highlighter::Highlighter(QTextDocument *parent)
     highlightingRules.append(rule);
 
     // Single Line Comment
-    singleLineCommentFormat.setForeground(Qt::red);
+    singleLineCommentFormat.setForeground(Qt::darkGray);
     rule.pattern = QRegularExpression(QStringLiteral("#[^\n]*"));
     rule.format = singleLineCommentFormat;
     highlightingRules.append(rule);
 
     // Multiple Lines Comment
-    multiLineCommentFormat.setForeground(Qt::red);
+    multiLineCommentFormat.setForeground(Qt::gray);
 
     commentStartExpression = QRegularExpression(QStringLiteral("/\\*"));
     commentEndExpression = QRegularExpression(QStringLiteral("\\*/"));
@@ -43,7 +43,12 @@ void Highlighter::addSpecialWord(QString word)
 {
     HighlightingRule rule;
 
-    keywordFormat.setForeground(Qt::darkBlue);
+    //keywordFormat.setForeground(Qt::darkBlue);
+    //QBrush specialColor;
+    //specialColor.setColor("#B6BABF");
+    //specialColor.setColor("#788DE6");
+
+    keywordFormat.setForeground(Qt::magenta);
     keywordFormat.setFontWeight(QFont::Bold);
 
     rule.pattern = QRegularExpression("\\b"+word+"\\b");

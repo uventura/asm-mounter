@@ -42,6 +42,8 @@ private slots:
 
     void on_actionLoad_Config_File_triggered();
 
+    void on_actionNew_File_triggered();
+
 private:
     struct FileLoaded
     {

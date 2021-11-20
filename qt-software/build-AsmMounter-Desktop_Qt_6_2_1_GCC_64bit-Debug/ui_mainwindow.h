@@ -71,8 +71,8 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
         MainWindow->resize(612, 463);
-        MainWindow->setStyleSheet(QString::fromUtf8("background-color:#2D232E;\n"
-"color: #F1F0EA;\n"
+        MainWindow->setStyleSheet(QString::fromUtf8("background-color:#262626;\n"
+"color: #C9CEBD;\n"
 "font-size:15px;"));
         actionNew_File = new QAction(MainWindow);
         actionNew_File->setObjectName(QString::fromUtf8("actionNew_File"));
@@ -118,6 +118,7 @@ public:
         verticalLayout_2->setContentsMargins(0, 0, 0, 0);
         FileTree = new QTreeView(verticalLayoutWidget_2);
         FileTree->setObjectName(QString::fromUtf8("FileTree"));
+        FileTree->setStyleSheet(QString::fromUtf8("background-color:#252627;"));
 
         verticalLayout_2->addWidget(FileTree);
 
@@ -144,7 +145,7 @@ public:
         gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
         listView = new QListView(tab_3);
         listView->setObjectName(QString::fromUtf8("listView"));
-        listView->setStyleSheet(QString::fromUtf8("background-color:#474448;"));
+        listView->setStyleSheet(QString::fromUtf8("background-color:#252627;"));
 
         gridLayout_2->addWidget(listView, 0, 0, 1, 1);
 
@@ -155,6 +156,7 @@ public:
         gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
         textEdit = new QTextEdit(tab_4);
         textEdit->setObjectName(QString::fromUtf8("textEdit"));
+        textEdit->setStyleSheet(QString::fromUtf8("background-color:#262626;"));
 
         gridLayout_3->addWidget(textEdit, 0, 0, 1, 1);
 

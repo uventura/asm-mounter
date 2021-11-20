@@ -172,3 +172,15 @@ void MainWindow::on_actionLoad_Config_File_triggered()
         //qDebug() << configFile->fileContent << "\n";
     }
 }
+
+void MainWindow::on_actionNew_File_triggered()
+{
+    // Blank File
+    FileLoaded *files = new FileLoaded;
+    scriptsLoaded.append(files);
+
+    newFile("Untitled", "");
+    if(hightlighter == nullptr)
+        newHighlighter(scriptsEditor[ui->TabsTextEditor->currentIndex()]->document());
+}
+
