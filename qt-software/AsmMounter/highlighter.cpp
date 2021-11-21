@@ -6,49 +6,95 @@ Highlighter::Highlighter(QTextDocument *parent)
 
     HighlightingRule rule;
 
-    // Default Text
+    // Special Default Word - Used For other Languages
+    addSpecialWord("if");
+    addSpecialWord("else");
+    addSpecialWord("elif");
+    addSpecialWord("while");
+    addSpecialWord("for");
+
+    addSpecialWord("void");
+    addSpecialWord("int");
+    addSpecialWord("float");
+    addSpecialWord("double");
+    addSpecialWord("string");
+    addSpecialWord("bool");
+    addSpecialWord("class");
+
+    addSpecialWord("auto");
+    addSpecialWord("nullptr");
+    addSpecialWord("vector");
+    addSpecialWord("using");
+    addSpecialWord("namespace");
+    addSpecialWord("#include");
+
+    addSpecialWord("def", Qt::gray);
+
+
+    /*
+    // QT Expressions
     classFormat.setFontWeight(QFont::Bold);
     classFormat.setForeground(Qt::darkMagenta);
     rule.pattern = QRegularExpression(QStringLiteral("\\bQ[A-Za-z]+\\b"));
     rule.format = classFormat;
-    highlightingRules.append(rule);
+    highlightingRules.append(rule);*/
 
-    // Multiple Lines Comment
-    quotationFormat.setForeground(Qt::darkGreen);
+    // Between Double Cotes
+    quotationFormat.setForeground(Qt::darkCyan);
     rule.pattern = QRegularExpression(QStringLiteral("\".*\""));
     rule.format = quotationFormat;
     highlightingRules.append(rule);
 
+    // Between Single Cotes
+    rule.pattern = QRegularExpression(QStringLiteral("'.*'"));
+    rule.format = quotationFormat;
+    highlightingRules.append(rule);
+
     // Function Highlight
-    functionFormat.setFontItalic(true);
-    functionFormat.setForeground(Qt::blue);
+    functionFormat.setForeground(Qt::yellow);
     rule.pattern = QRegularExpression(QStringLiteral("\\b[A-Za-z0-9_]+(?=\\()"));
     rule.format = functionFormat;
     highlightingRules.append(rule);
 
-    // Single Line Comment
+    // Label Highlight
+    functionFormat.setForeground(Qt::magenta);
+    rule.pattern = QRegularExpression(QStringLiteral("\\b[A-Za-z0-9_]+:"));
+    rule.format = functionFormat;
+    highlightingRules.append(rule);
+
+    // C++ Single Line Comment
+    singleLineCommentFormat.setForeground(Qt::darkGray);
+    rule.pattern = QRegularExpression(QStringLiteral("//[^\n]*"));
+    rule.format = singleLineCommentFormat;
+    highlightingRules.append(rule);
+
+    // Python Single Line Comment
     singleLineCommentFormat.setForeground(Qt::darkGray);
     rule.pattern = QRegularExpression(QStringLiteral("#[^\n]*"));
     rule.format = singleLineCommentFormat;
     highlightingRules.append(rule);
 
-    // Multiple Lines Comment
-    multiLineCommentFormat.setForeground(Qt::gray);
+    // C++ Multiple Lines Comment
+    multiLineCommentFormat.setForeground(Qt::darkGray);
 
     commentStartExpression = QRegularExpression(QStringLiteral("/\\*"));
     commentEndExpression = QRegularExpression(QStringLiteral("\\*/"));
+
+    // Python Multiple Lines Comment
+    quotationFormat.setForeground(Qt::gray);
+    rule.pattern = QRegularExpression(QStringLiteral("'''*'''"));
+    rule.format = quotationFormat;
+    highlightingRules.append(rule);
 }
 
-void Highlighter::addSpecialWord(QString word)
+void Highlighter::addSpecialWord(QString word, QColor color)
 {
     HighlightingRule rule;
 
-    //keywordFormat.setForeground(Qt::darkBlue);
-    //QBrush specialColor;
-    //specialColor.setColor("#B6BABF");
-    //specialColor.setColor("#788DE6");
+    QBrush specialColor(Qt::SolidPattern);
+    specialColor.setColor(color);
 
-    keywordFormat.setForeground(Qt::magenta);
+    keywordFormat.setForeground(specialColor);
     keywordFormat.setFontWeight(QFont::Bold);
 
     rule.pattern = QRegularExpression("\\b"+word+"\\b");

@@ -97,5 +97,8 @@
 			"opcode":"C",
 			"type":"jlr"
 		}
-	}
+	},
+
+	"set_instruction":["addi", "subi", "andi", "ori", "xori", 
+	"beq", "bne", "ble", "bleu", "bgt", "bgtu", "jal", "jalr"]
 }

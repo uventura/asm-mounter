@@ -23,6 +23,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     newFile("Untitled", "");
     newHighlighter(scriptsEditor[ui->TabsTextEditor->currentIndex()]->document());
+
+    // Setting Working Directory
+    connect(ui->FileTree, &TreeDir::doubleClickFileTreeItem, this, &MainWindow::on_selectTree_File);
 }
 
 MainWindow::~MainWindow()
@@ -30,22 +33,83 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+QString MainWindow::getFileNameFromSrc(QString src)
+{
+    auto splitedSrc = src.split("/");
+    return splitedSrc[splitedSrc.size()-1];
+}
+
+void MainWindow::changeCurrentFileContent(int index, QString src)
+{
+    ui->TabsTextEditor->setTabText(index, getFileNameFromSrc(src));
+
+    scriptsLoaded[index]->fileSrc = src;
+    scriptsLoaded[index]->fileContent = scriptsEditor[index]->toPlainText();
+}
+
+void MainWindow::saveAsFile()
+{
+    int index = ui->TabsTextEditor->currentIndex();
+    if(index != -1)
+    {
+        QString localfile = QFileDialog::getSaveFileName(this, "Save as");
+        QFile file(localfile);
+
+        if(!file.open(QFile::WriteOnly | QFile::Text))
+        {
+            qDebug() << "Could not save as the file";
+            return;
+        }
+
+        QTextStream out(&file);
+        QString text = scriptsEditor[index]->toPlainText();
+
+        out << text;
+
+        changeCurrentFileContent(index, localfile);
+
+        file.close();
+    }
+}
+
+void MainWindow::saveFile()
+{
+    int index = ui->TabsTextEditor->currentIndex();
+    QFile file(scriptsLoaded[index]->fileSrc);
+
+    if(!file.open(QFile::WriteOnly | QFile::Text))
+    {
+        qDebug() << "Could not save the file";
+        return;
+    }
+
+    QTextStream out(&file);
+    QString text = scriptsEditor[index]->toPlainText();
+
+    out << text;
+    file.close();
+}
+
 MainWindow::FileLoaded* MainWindow::openNewFile(QString fileDialogMessage, QString errorMessage)
 {
     FileLoaded* fileLoaded = new FileLoaded();
+
     fileLoaded->fileSrc = QFileDialog::getOpenFileName(this, fileDialogMessage);
 
-    fileLoaded->file = new QFile(fileLoaded->fileSrc);
+    QFile file(fileLoaded->fileSrc);
 
-    if(!fileLoaded->file->open(QIODevice::ReadOnly | QFile::Text))
+    if(!file.open(QIODevice::ReadOnly | QFile::Text))
     {
         qDebug() << errorMessage << "\n";
+        delete(fileLoaded);
+
         return nullptr;
     }
 
-    QTextStream currentTextFile(fileLoaded->file);
+    QTextStream currentTextFile(&file);
     fileLoaded->fileContent = currentTextFile.readAll();
 
+    file.close();
     return fileLoaded;
 }
 
@@ -177,10 +241,61 @@ void MainWindow::on_actionNew_File_triggered()
 {
     // Blank File
     FileLoaded *files = new FileLoaded;
+    files->fileSrc="";
+    files->fileContent="";
+    files->file=nullptr;
+
     scriptsLoaded.append(files);
 
     newFile("Untitled", "");
     if(hightlighter == nullptr)
         newHighlighter(scriptsEditor[ui->TabsTextEditor->currentIndex()]->document());
+}
+
+void MainWindow::on_actionOpen_Folder_triggered()
+{
+    ui->FileTree->loadFolder();
+    ui->FolderName->setText(ui->FileTree->getRootFolderName());
+}
+
+void MainWindow::on_selectTree_File(QString& fileSrc)
+{
+    QFile newFileTree(fileSrc);
+
+    if(newFileTree.open(QIODevice::ReadOnly | QFile::Text))
+    {
+        FileLoaded* newFileLoaded = new FileLoaded();
+        QTextStream newTextFile(&newFileTree);
+
+        newFileLoaded->fileSrc = fileSrc;
+        //newFileLoaded->file = newFileTree;
+        newFileLoaded->fileContent = newTextFile.readAll();
+
+        scriptsLoaded.append(newFileLoaded);
+        auto splitSrc = newFileLoaded->fileSrc.split("/");
+        QString tabTitle = splitSrc[splitSrc.size()-1];
+
+        newFile(tabTitle, newFileLoaded->fileContent);
+        newHighlighter(scriptsEditor[ui->TabsTextEditor->currentIndex()]->document());
+    }
+}
+
+
+void MainWindow::on_actionSave_As_triggered()
+{
+    saveAsFile();
+}
+
+
+void MainWindow::on_actionSave_triggered()
+{
+    int index = ui->TabsTextEditor->currentIndex();
+    if(scriptsLoaded[index]->fileSrc.isEmpty())
+    {
+        saveAsFile();
+        return;
+    }
+
+    saveFile();
 }
 

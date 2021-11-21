@@ -19,7 +19,7 @@ class Highlighter : public QSyntaxHighlighter
 public:
     Highlighter(QTextDocument *parent = nullptr);
 
-    void addSpecialWord(QString word);
+    void addSpecialWord(QString word, QColor color="#788DE6");
     void clearWords();
 
 protected:

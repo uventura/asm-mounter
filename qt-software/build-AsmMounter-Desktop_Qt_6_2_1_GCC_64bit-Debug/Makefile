@@ -55,16 +55,20 @@ OBJECTS_DIR   = ./
 SOURCES       = ../AsmMounter/codeeditor.cpp \
 		../AsmMounter/highlighter.cpp \
 		../AsmMounter/main.cpp \
-		../AsmMounter/mainwindow.cpp moc_codeeditor.cpp \
+		../AsmMounter/mainwindow.cpp \
+		../AsmMounter/treedir.cpp moc_codeeditor.cpp \
 		moc_highlighter.cpp \
-		moc_mainwindow.cpp
+		moc_mainwindow.cpp \
+		moc_treedir.cpp
 OBJECTS       = codeeditor.o \
 		highlighter.o \
 		main.o \
 		mainwindow.o \
+		treedir.o \
 		moc_codeeditor.o \
 		moc_highlighter.o \
-		moc_mainwindow.o
+		moc_mainwindow.o \
+		moc_treedir.o
 DIST          = /home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/common/unix.conf \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/common/linux.conf \
@@ -182,6 +186,7 @@ DIST          = /home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/qt_config.prf \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/spec_post.prf \
+		../AsmMounter/.qmake.stash \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/toolchain.prf \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/default_pre.prf \
@@ -205,10 +210,12 @@ DIST          = /home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/spec_pre.prf \
 		../AsmMounter/AsmMounter.pro ../AsmMounter/codeeditor.h \
 		../AsmMounter/highlighter.h \
 		../AsmMounter/json.h \
-		../AsmMounter/mainwindow.h ../AsmMounter/codeeditor.cpp \
+		../AsmMounter/mainwindow.h \
+		../AsmMounter/treedir.h ../AsmMounter/codeeditor.cpp \
 		../AsmMounter/highlighter.cpp \
 		../AsmMounter/main.cpp \
-		../AsmMounter/mainwindow.cpp
+		../AsmMounter/mainwindow.cpp \
+		../AsmMounter/treedir.cpp
 QMAKE_TARGET  = AsmMounter
 DESTDIR       = 
 TARGET        = AsmMounter
@@ -337,6 +344,7 @@ Makefile: ../AsmMounter/AsmMounter.pro /home/ualiton/Qt/6.2.1/gcc_64/mkspecs/lin
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/qt_config.prf \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/toolchain.prf \
 		/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/default_pre.prf \
@@ -479,6 +487,7 @@ Makefile: ../AsmMounter/AsmMounter.pro /home/ualiton/Qt/6.2.1/gcc_64/mkspecs/lin
 /home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/qt_config.prf:
 /home/ualiton/Qt/6.2.1/gcc_64/mkspecs/linux-g++/qmake.conf:
 /home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/exclusive_builds.prf:
 /home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/toolchain.prf:
 /home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/default_pre.prf:
@@ -518,8 +527,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../AsmMounter/codeeditor.h ../AsmMounter/highlighter.h ../AsmMounter/json.h ../AsmMounter/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../AsmMounter/codeeditor.cpp ../AsmMounter/highlighter.cpp ../AsmMounter/main.cpp ../AsmMounter/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../AsmMounter/codeeditor.h ../AsmMounter/highlighter.h ../AsmMounter/json.h ../AsmMounter/mainwindow.h ../AsmMounter/treedir.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../AsmMounter/codeeditor.cpp ../AsmMounter/highlighter.cpp ../AsmMounter/main.cpp ../AsmMounter/mainwindow.cpp ../AsmMounter/treedir.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../AsmMounter/mainwindow.ui $(DISTDIR)/
 
 
@@ -552,9 +561,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -std=gnu++1z -Wall -Wextra -dM -E -o moc_predefs.h /home/ualiton/Qt/6.2.1/gcc_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_codeeditor.cpp moc_highlighter.cpp moc_mainwindow.cpp
+compiler_moc_header_make_all: moc_codeeditor.cpp moc_highlighter.cpp moc_mainwindow.cpp moc_treedir.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_codeeditor.cpp moc_highlighter.cpp moc_mainwindow.cpp
+	-$(DEL_FILE) moc_codeeditor.cpp moc_highlighter.cpp moc_mainwindow.cpp moc_treedir.cpp
 moc_codeeditor.cpp: ../AsmMounter/codeeditor.h \
 		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QPlainTextEdit \
 		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qplaintextedit.h \
@@ -1049,6 +1058,183 @@ moc_mainwindow.cpp: ../AsmMounter/mainwindow.h \
 		/home/ualiton/Qt/6.2.1/gcc_64/libexec/moc
 	/home/ualiton/Qt/6.2.1/gcc_64/libexec/moc $(DEFINES) --include /home/ualiton/dev/git/asm-mounter/qt-software/build-AsmMounter-Desktop_Qt_6_2_1_GCC_64bit-Debug/moc_predefs.h -I/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/linux-g++ -I/home/ualiton/dev/git/asm-mounter/qt-software/AsmMounter -I/home/ualiton/Qt/6.2.1/gcc_64/include -I/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets -I/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui -I/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../AsmMounter/mainwindow.h -o moc_mainwindow.cpp
 
+moc_treedir.cpp: ../AsmMounter/treedir.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QString \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstring.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qchar.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qglobal.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qconfig.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qtcore-config.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qsysinfo.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qlogging.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qflags.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qatomic.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qnumeric.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qversiontagging.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstringview.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qbytearray.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qrefcount.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qnamespace.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qtmetamacros.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qarraydata.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qpair.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qarraydatapointer.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qarraydataops.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcontainertools_impl.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qbytearrayalgorithms.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qbytearrayview.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstringliteral.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstringalgorithms.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qanystringview.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qutf8stringview.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstringtokenizer.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/QFileSystemModel \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qfilesystemmodel.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qtguiglobal.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qtgui-config.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qhash.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qiterator.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qlist.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstringlist.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qalgorithms.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qmath.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qobject.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcoreevent.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qmetatype.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcompare.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qscopeguard.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qdatastream.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qiodevicebase.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qiterable.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qmetacontainer.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcontainerinfo.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qtaggedpointer.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qobject_impl.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qproperty.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qshareddata.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qpropertyprivate.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qvariant.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qmap.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qshareddata_impl.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qdebug.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qtextstream.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstringconverter.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qset.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcontiguouscache.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qdir.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qfile.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qfiledevice.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qiodevice.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qfileinfo.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qdatetime.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcalendar.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qlocale.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qicon.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qsize.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qmargins.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qpixmap.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qpaintdevice.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qwindowdefs.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qwindowdefs_win.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qrect.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qpoint.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qcolor.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qrgb.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qrgba64.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qimage.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qpixelformat.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qtransform.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qpolygon.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qregion.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qline.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qdiriterator.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QModelIndex \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QDir \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QTreeView \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qtreeview.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qtwidgets-config.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qabstractitemview.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qframe.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qwidget.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qpalette.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qbrush.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qfont.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qfontmetrics.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qfontinfo.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qsizepolicy.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qcursor.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qbitmap.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qkeysequence.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qevent.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qpointer.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qurl.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qeventpoint.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qvector2d.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qvectornd.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qpointingdevice.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qinputdevice.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qscreen.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QList \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QObject \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QRect \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QSize \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QSizeF \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/QTransform \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qnativeinterface.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qloggingcategory.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qitemselectionmodel.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qstyleoption.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qvalidator.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qregularexpression.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qslider.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qabstractslider.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qstyle.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qtabbar.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qtabwidget.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qrubberband.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QScroller \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qscroller.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QPointF \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QScrollerProperties \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qscrollerproperties.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QScopedPointer \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QMetaType \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QVariant \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QFileDialog \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qfiledialog.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qdialog.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QItemSelectionModel \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QAbstractItemView \
+		moc_predefs.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/libexec/moc
+	/home/ualiton/Qt/6.2.1/gcc_64/libexec/moc $(DEFINES) --include /home/ualiton/dev/git/asm-mounter/qt-software/build-AsmMounter-Desktop_Qt_6_2_1_GCC_64bit-Debug/moc_predefs.h -I/home/ualiton/Qt/6.2.1/gcc_64/mkspecs/linux-g++ -I/home/ualiton/dev/git/asm-mounter/qt-software/AsmMounter -I/home/ualiton/Qt/6.2.1/gcc_64/include -I/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets -I/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui -I/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../AsmMounter/treedir.h -o moc_treedir.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
@@ -1057,7 +1243,180 @@ compiler_uic_make_all: ui_mainwindow.h
 compiler_uic_clean:
 	-$(DEL_FILE) ui_mainwindow.h
 ui_mainwindow.h: ../AsmMounter/mainwindow.ui \
-		/home/ualiton/Qt/6.2.1/gcc_64/libexec/uic
+		/home/ualiton/Qt/6.2.1/gcc_64/libexec/uic \
+		../AsmMounter/treedir.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QString \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstring.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qchar.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qglobal.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qconfig.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qtcore-config.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qsysinfo.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qlogging.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qflags.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qatomic.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qnumeric.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qversiontagging.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstringview.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qbytearray.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qrefcount.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qnamespace.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qtmetamacros.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qarraydata.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qpair.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qarraydatapointer.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qarraydataops.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcontainertools_impl.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qbytearrayalgorithms.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qbytearrayview.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstringliteral.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstringalgorithms.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qanystringview.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qutf8stringview.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstringtokenizer.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/QFileSystemModel \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qfilesystemmodel.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qtguiglobal.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qtgui-config.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qhash.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qiterator.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qlist.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstringlist.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qalgorithms.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qmath.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qobject.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcoreevent.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qmetatype.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcompare.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qscopeguard.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qdatastream.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qiodevicebase.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qiterable.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qmetacontainer.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcontainerinfo.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qtaggedpointer.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qobject_impl.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qproperty.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qshareddata.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qpropertyprivate.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qvariant.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qmap.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qshareddata_impl.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qdebug.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qtextstream.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstringconverter.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qset.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcontiguouscache.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qdir.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qfile.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qfiledevice.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qiodevice.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qfileinfo.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qdatetime.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcalendar.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qlocale.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qicon.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qsize.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qmargins.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qpixmap.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qpaintdevice.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qwindowdefs.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qwindowdefs_win.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qrect.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qpoint.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qcolor.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qrgb.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qrgba64.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qimage.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qpixelformat.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qtransform.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qpolygon.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qregion.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qline.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qdiriterator.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QModelIndex \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QDir \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QTreeView \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qtreeview.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qtwidgets-config.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qabstractitemview.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qframe.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qwidget.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qpalette.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qbrush.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qfont.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qfontmetrics.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qfontinfo.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qsizepolicy.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qcursor.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qbitmap.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qkeysequence.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qevent.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qpointer.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qurl.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qeventpoint.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qvector2d.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qvectornd.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qpointingdevice.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qinputdevice.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qscreen.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QList \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QObject \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QRect \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QSize \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QSizeF \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/QTransform \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qnativeinterface.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qloggingcategory.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qitemselectionmodel.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qstyleoption.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qvalidator.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qregularexpression.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qslider.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qabstractslider.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qstyle.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qtabbar.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qtabwidget.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qrubberband.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QScroller \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qscroller.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QPointF \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QScrollerProperties \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qscrollerproperties.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QScopedPointer \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QMetaType \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QVariant \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QFileDialog \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qfiledialog.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qdialog.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QItemSelectionModel \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QAbstractItemView
 	/home/ualiton/Qt/6.2.1/gcc_64/libexec/uic ../AsmMounter/mainwindow.ui -o ui_mainwindow.h
 
 compiler_yacc_decl_make_all:
@@ -1769,8 +2128,233 @@ mainwindow.o: ../AsmMounter/mainwindow.cpp ../AsmMounter/mainwindow.h \
 		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/QFontMetrics \
 		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/QTextBlock \
 		../AsmMounter/json.h \
-		ui_mainwindow.h
+		ui_mainwindow.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QVariant \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/QAction \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qaction.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QApplication \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qapplication.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcoreapplication.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qeventloop.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qfuture.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qfutureinterface.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qmutex.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qresultstore.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qfuture_impl.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qthreadpool.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qrunnable.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qexception.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qapplicationpermission.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcoreapplication_platform.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qguiapplication.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qinputmethod.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qguiapplication_platform.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QHeaderView \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qheaderview.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qabstractitemview.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qitemselectionmodel.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qstyleoption.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qvalidator.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qslider.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qabstractslider.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qstyle.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qtabbar.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qrubberband.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QListView \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qlistview.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QMenu \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qmenu.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QMenuBar \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qmenubar.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QSplitter \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qsplitter.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QStatusBar \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qstatusbar.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QTabWidget \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QToolBar \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qtoolbar.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QTreeView \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qtreeview.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QVBoxLayout
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../AsmMounter/mainwindow.cpp
+
+treedir.o: ../AsmMounter/treedir.cpp ../AsmMounter/treedir.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QString \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstring.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qchar.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qglobal.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qconfig.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qtcore-config.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qsysinfo.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qlogging.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qflags.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qatomic.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qnumeric.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qversiontagging.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstringview.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qbytearray.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qrefcount.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qnamespace.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qtmetamacros.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qarraydata.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qpair.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qarraydatapointer.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qarraydataops.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcontainertools_impl.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qbytearrayalgorithms.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qbytearrayview.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstringliteral.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstringalgorithms.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qanystringview.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qutf8stringview.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstringtokenizer.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/QFileSystemModel \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qfilesystemmodel.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qtguiglobal.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qtgui-config.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qhash.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qiterator.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qlist.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstringlist.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qalgorithms.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qmath.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qobject.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcoreevent.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qmetatype.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcompare.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qscopeguard.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qdatastream.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qiodevicebase.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qiterable.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qmetacontainer.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcontainerinfo.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qtaggedpointer.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qobject_impl.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qproperty.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qshareddata.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qpropertyprivate.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qvariant.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qmap.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qshareddata_impl.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qdebug.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qtextstream.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qstringconverter.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qset.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcontiguouscache.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qdir.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qfile.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qfiledevice.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qiodevice.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qfileinfo.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qdatetime.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qcalendar.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qlocale.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qicon.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qsize.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qmargins.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qpixmap.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qpaintdevice.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qwindowdefs.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qwindowdefs_win.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qrect.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qpoint.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qcolor.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qrgb.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qrgba64.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qimage.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qpixelformat.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qtransform.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qpolygon.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qregion.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qline.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qdiriterator.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QModelIndex \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QDir \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QTreeView \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qtreeview.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qtwidgets-config.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qabstractitemview.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qframe.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qwidget.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qpalette.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qbrush.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qfont.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qfontmetrics.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qfontinfo.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qsizepolicy.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qcursor.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qbitmap.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qkeysequence.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qevent.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qpointer.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qurl.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qeventpoint.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qvector2d.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qvectornd.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qpointingdevice.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qinputdevice.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qscreen.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QList \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QObject \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QRect \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QSize \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QSizeF \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/QTransform \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qnativeinterface.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qloggingcategory.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qitemselectionmodel.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qstyleoption.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtGui/qvalidator.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/qregularexpression.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qslider.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qabstractslider.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qstyle.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qtabbar.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qtabwidget.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qrubberband.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QScroller \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qscroller.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QPointF \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QScrollerProperties \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qscrollerproperties.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QScopedPointer \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QMetaType \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QVariant \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QFileDialog \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qfiledialog.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/qdialog.h \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtCore/QItemSelectionModel \
+		/home/ualiton/Qt/6.2.1/gcc_64/include/QtWidgets/QAbstractItemView
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o treedir.o ../AsmMounter/treedir.cpp
 
 moc_codeeditor.o: moc_codeeditor.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_codeeditor.o moc_codeeditor.cpp
@@ -1780,6 +2364,9 @@ moc_highlighter.o: moc_highlighter.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
+
+moc_treedir.o: moc_treedir.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_treedir.o moc_treedir.cpp
 
 ####### Install
 

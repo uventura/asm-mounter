@@ -12,13 +12,15 @@ SOURCES += \
     codeeditor.cpp \
     highlighter.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    treedir.cpp
 
 HEADERS += \
     codeeditor.h \
     highlighter.h \
     json.h \
-    mainwindow.h
+    mainwindow.h \
+    treedir.h
 
 FORMS += \
     mainwindow.ui

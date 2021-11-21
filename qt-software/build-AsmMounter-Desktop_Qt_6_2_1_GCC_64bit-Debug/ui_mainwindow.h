@@ -14,6 +14,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QListView>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
@@ -22,9 +23,10 @@
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QTextEdit>
-#include <QtWidgets/QTreeView>
+#include <QtWidgets/QToolBar>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
+#include "treedir.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -43,12 +45,19 @@ public:
     QAction *actionNew_Processor_File;
     QAction *actionLoad_Config_File;
     QAction *actionLoad_Processor_FIle;
+    QAction *actionClear_Output;
+    QAction *actionClear_Console;
+    QAction *actionRun_Current_File;
+    QAction *actionGenerate_Hex_File;
+    QAction *actionExit;
+    QAction *actionOpen_Folder;
     QWidget *mainProgramWidget;
     QGridLayout *gridLayout_4;
     QSplitter *mainSplitter;
     QWidget *verticalLayoutWidget_2;
     QVBoxLayout *verticalLayout_2;
-    QTreeView *FileTree;
+    QLabel *FolderName;
+    TreeDir *FileTree;
     QWidget *verticalLayoutWidget;
     QVBoxLayout *verticalLayout;
     QSplitter *splitter;
@@ -64,7 +73,9 @@ public:
     QMenu *menuFile;
     QMenu *menuEdit;
     QMenu *menuOptions;
+    QMenu *menuExecution;
     QStatusBar *statusbar;
+    QToolBar *toolBar;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -98,6 +109,18 @@ public:
         actionLoad_Config_File->setObjectName(QString::fromUtf8("actionLoad_Config_File"));
         actionLoad_Processor_FIle = new QAction(MainWindow);
         actionLoad_Processor_FIle->setObjectName(QString::fromUtf8("actionLoad_Processor_FIle"));
+        actionClear_Output = new QAction(MainWindow);
+        actionClear_Output->setObjectName(QString::fromUtf8("actionClear_Output"));
+        actionClear_Console = new QAction(MainWindow);
+        actionClear_Console->setObjectName(QString::fromUtf8("actionClear_Console"));
+        actionRun_Current_File = new QAction(MainWindow);
+        actionRun_Current_File->setObjectName(QString::fromUtf8("actionRun_Current_File"));
+        actionGenerate_Hex_File = new QAction(MainWindow);
+        actionGenerate_Hex_File->setObjectName(QString::fromUtf8("actionGenerate_Hex_File"));
+        actionExit = new QAction(MainWindow);
+        actionExit->setObjectName(QString::fromUtf8("actionExit"));
+        actionOpen_Folder = new QAction(MainWindow);
+        actionOpen_Folder->setObjectName(QString::fromUtf8("actionOpen_Folder"));
         mainProgramWidget = new QWidget(MainWindow);
         mainProgramWidget->setObjectName(QString::fromUtf8("mainProgramWidget"));
         QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -116,7 +139,14 @@ public:
         verticalLayout_2 = new QVBoxLayout(verticalLayoutWidget_2);
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         verticalLayout_2->setContentsMargins(0, 0, 0, 0);
-        FileTree = new QTreeView(verticalLayoutWidget_2);
+        FolderName = new QLabel(verticalLayoutWidget_2);
+        FolderName->setObjectName(QString::fromUtf8("FolderName"));
+        FolderName->setStyleSheet(QString::fromUtf8("font-weight:bold;\n"
+"color:rgba(169, 169, 190, 192);"));
+
+        verticalLayout_2->addWidget(FolderName);
+
+        FileTree = new TreeDir(verticalLayoutWidget_2);
         FileTree->setObjectName(QString::fromUtf8("FileTree"));
         FileTree->setStyleSheet(QString::fromUtf8("background-color:#252627;"));
 
@@ -156,7 +186,7 @@ public:
         gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
         textEdit = new QTextEdit(tab_4);
         textEdit->setObjectName(QString::fromUtf8("textEdit"));
-        textEdit->setStyleSheet(QString::fromUtf8("background-color:#262626;"));
+        textEdit->setStyleSheet(QString::fromUtf8("background-color:#252627;"));
 
         gridLayout_3->addWidget(textEdit, 0, 0, 1, 1);
 
@@ -179,28 +209,45 @@ public:
         menuEdit->setObjectName(QString::fromUtf8("menuEdit"));
         menuOptions = new QMenu(menubar);
         menuOptions->setObjectName(QString::fromUtf8("menuOptions"));
+        menuExecution = new QMenu(menubar);
+        menuExecution->setObjectName(QString::fromUtf8("menuExecution"));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
         MainWindow->setStatusBar(statusbar);
+        toolBar = new QToolBar(MainWindow);
+        toolBar->setObjectName(QString::fromUtf8("toolBar"));
+        toolBar->setMovable(false);
+        toolBar->setFloatable(true);
+        MainWindow->addToolBar(Qt::TopToolBarArea, toolBar);
 
         menubar->addAction(menuFile->menuAction());
         menubar->addAction(menuEdit->menuAction());
         menubar->addAction(menuOptions->menuAction());
+        menubar->addAction(menuExecution->menuAction());
         menuFile->addAction(actionNew_File);
         menuFile->addAction(actionOpen_File);
         menuFile->addSeparator();
         menuFile->addAction(actionSave);
         menuFile->addAction(actionSave_As);
         menuFile->addSeparator();
+        menuFile->addAction(actionOpen_Folder);
+        menuFile->addSeparator();
         menuFile->addAction(actionNew_Config_File);
         menuFile->addAction(actionNew_Processor_File);
+        menuFile->addSeparator();
+        menuFile->addAction(actionExit);
         menuEdit->addAction(actionCopy);
         menuEdit->addAction(actionCut);
         menuEdit->addAction(actionUndo);
         menuEdit->addAction(actionRedo);
         menuOptions->addAction(actionLoad_Config_File);
         menuOptions->addAction(actionLoad_Processor_FIle);
+        menuOptions->addSeparator();
+        menuOptions->addAction(actionClear_Output);
+        menuOptions->addAction(actionClear_Console);
+        menuExecution->addAction(actionRun_Current_File);
+        menuExecution->addAction(actionGenerate_Hex_File);
 
         retranslateUi(MainWindow);
 
@@ -226,11 +273,20 @@ public:
         actionNew_Processor_File->setText(QCoreApplication::translate("MainWindow", "New Processor File", nullptr));
         actionLoad_Config_File->setText(QCoreApplication::translate("MainWindow", "Load Config Script", nullptr));
         actionLoad_Processor_FIle->setText(QCoreApplication::translate("MainWindow", "Load Processor Script", nullptr));
+        actionClear_Output->setText(QCoreApplication::translate("MainWindow", "Clear Output", nullptr));
+        actionClear_Console->setText(QCoreApplication::translate("MainWindow", "Clear Console", nullptr));
+        actionRun_Current_File->setText(QCoreApplication::translate("MainWindow", "Run Current File", nullptr));
+        actionGenerate_Hex_File->setText(QCoreApplication::translate("MainWindow", "Save Hex File", nullptr));
+        actionExit->setText(QCoreApplication::translate("MainWindow", "Exit", nullptr));
+        actionOpen_Folder->setText(QCoreApplication::translate("MainWindow", "Open Folder", nullptr));
+        FolderName->setText(QCoreApplication::translate("MainWindow", "  Current Folder", nullptr));
         StatusProgram->setTabText(StatusProgram->indexOf(tab_3), QCoreApplication::translate("MainWindow", "Output", nullptr));
         StatusProgram->setTabText(StatusProgram->indexOf(tab_4), QCoreApplication::translate("MainWindow", "Console", nullptr));
         menuFile->setTitle(QCoreApplication::translate("MainWindow", "File", nullptr));
         menuEdit->setTitle(QCoreApplication::translate("MainWindow", "Edit", nullptr));
         menuOptions->setTitle(QCoreApplication::translate("MainWindow", "Options", nullptr));
+        menuExecution->setTitle(QCoreApplication::translate("MainWindow", "Build", nullptr));
+        toolBar->setWindowTitle(QCoreApplication::translate("MainWindow", "toolBar", nullptr));
     } // retranslateUi
 
 };

@@ -44,6 +44,14 @@ private slots:
 
     void on_actionNew_File_triggered();
 
+    void on_actionOpen_Folder_triggered();
+
+    void on_selectTree_File(QString& fileSrc);
+
+    void on_actionSave_As_triggered();
+
+    void on_actionSave_triggered();
+
 private:
     struct FileLoaded
     {
@@ -65,6 +73,12 @@ private:
 
     nlohmann::json configJson;
 private:
+    QString getFileNameFromSrc(QString src);
+
+    void saveAsFile();
+    void saveFile();
+
+    void changeCurrentFileContent(int index, QString src);
     FileLoaded* openNewFile(QString fileDialogMessage, QString errorMessage);
     void newFile(QString title, QString textContent);
 

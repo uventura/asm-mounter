@@ -13,6 +13,7 @@ CodeEditor::CodeEditor(QWidget *parent) : QPlainTextEdit(parent)
 
     // Default Style
     setStyleSheet("background-color:#252627;color:white;");
+    setTabStopDistance(30);
 }
 
 int CodeEditor::lineNumberAreaWidth()
