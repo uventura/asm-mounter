@@ -57,7 +57,8 @@ void MainWindow::saveAsFile()
 
         if(!file.open(QFile::WriteOnly | QFile::Text))
         {
-            qDebug() << "Could not save as the file";
+            //qDebug() << "Could not save as the file";
+            ui->ConsoleOut->sendError("Could not 'save as' the file");
             return;
         }
 
@@ -79,12 +80,15 @@ void MainWindow::saveFile()
 
     if(!file.open(QFile::WriteOnly | QFile::Text))
     {
-        qDebug() << "Could not save the file";
+        //Debug() << "Could not save the file";
+        ui->ConsoleOut->sendError("Could not 'save' the file");
         return;
     }
 
     QTextStream out(&file);
     QString text = scriptsEditor[index]->toPlainText();
+
+    ui->ConsoleOut->sendSuccess("File '"+scriptsLoaded[index]->fileSrc+"' saved!");
 
     out << text;
     file.close();
@@ -100,7 +104,8 @@ MainWindow::FileLoaded* MainWindow::openNewFile(QString fileDialogMessage, QStri
 
     if(!file.open(QIODevice::ReadOnly | QFile::Text))
     {
-        qDebug() << errorMessage << "\n";
+        //qDebug() << errorMessage << "\n";
+        ui->ConsoleOut->sendError(errorMessage);
         delete(fileLoaded);
 
         return nullptr;
@@ -149,7 +154,10 @@ void MainWindow::newHighlighter(QTextDocument* document)
 // EVENT FUNCTIONS
 void MainWindow::on_actionOpen_File_triggered()
 {
+    ui->ConsoleOut->sendMessage("Opening File...");
+
     FileLoaded *scriptFile = openNewFile("Open .asm File", "Could Not Load .asm File");
+
     if(scriptFile != nullptr)
     {
         scriptsLoaded.append(scriptFile);
@@ -164,6 +172,8 @@ void MainWindow::on_actionOpen_File_triggered()
 
 void MainWindow::on_TabsTextEditor_tabCloseRequested(int index)
 {
+    ui->ConsoleOut->sendInfo("Tab Closed");
+
     ui->TabsTextEditor->removeTab(index);
 
     if(scriptsLoaded.size() > index)
@@ -186,7 +196,10 @@ void MainWindow::on_TabsTextEditor_currentChanged(int index)
 
 void MainWindow::on_actionLoad_Config_File_triggered()
 {
+    ui->ConsoleOut->sendMessage("Opening Config File...");
+
     configFile = openNewFile("Open .config File", "Could Not Load .config File");
+    bool gotError = false;
 
     if(configFile != nullptr)
     {
@@ -200,16 +213,22 @@ void MainWindow::on_actionLoad_Config_File_triggered()
             for(auto instruction: configJson["set_instruction"])
             {
                 if(instruction.is_string())
-                    highlightedWords.append(QString::fromStdString(instruction));
+                {
+                    QString temp_inst="";
+                    //ui->ConsoleOut->sendMessage(QString::fromStdString(instruction));
+                    temp_inst+=QString::fromStdString(instruction);
+                    highlightedWords.append(temp_inst);
+                }
                 else
                 {
-                    qDebug() << "Instructions Wrong\n";
+                    ui->ConsoleOut->sendError("In 'set_instruction' you have an incorrect instruction");
+                    gotError = true;
                     break;
                 }
             }
 
             // Highlighter Add Special Words
-            if(hightlighter != nullptr)
+            if(hightlighter != nullptr && !gotError)
             {
                 hightlighter->clearWords();
                 for(auto word: highlightedWords)
@@ -219,26 +238,39 @@ void MainWindow::on_actionLoad_Config_File_triggered()
             }
 
             // Reset Current File
-            if(ui->TabsTextEditor->currentIndex() != -1)
+            if(ui->TabsTextEditor->currentIndex() != -1 && !gotError)
             {
                 QString currentText = scriptsEditor[ui->TabsTextEditor->currentIndex()]->toPlainText();
                 scriptsEditor[ui->TabsTextEditor->currentIndex()]->setPlainText("");
                 scriptsEditor[ui->TabsTextEditor->currentIndex()]->setPlainText(currentText);
-
-                std::cout<<currentText.toStdString()<<"\n";
             }
         }
         else
         {
-            qDebug() << "No Instructions Defined!\n";
+            ui->ConsoleOut->sendError("Without Set Instructions Defined");
+            gotError = true;
         }
-
-        //qDebug() << configFile->fileContent << "\n";
     }
+
+    if(gotError)
+    {
+        ui->ConsoleOut->sendError("Incorrect Config File");
+
+        highlightedWords.clear();
+
+        delete(configFile);
+        configFile = nullptr;
+
+        return;
+    }
+
+    ui->ConsoleOut->sendSuccess("Config File Defined!");
 }
 
 void MainWindow::on_actionNew_File_triggered()
 {
+    ui->ConsoleOut->sendInfo("New Blank File");
+
     // Blank File
     FileLoaded *files = new FileLoaded;
     files->fileSrc="";
@@ -254,6 +286,8 @@ void MainWindow::on_actionNew_File_triggered()
 
 void MainWindow::on_actionOpen_Folder_triggered()
 {
+    ui->ConsoleOut->sendMessage("Opening Folder...");
+
     ui->FileTree->loadFolder();
     ui->FolderName->setText(ui->FileTree->getRootFolderName());
 }
@@ -264,6 +298,8 @@ void MainWindow::on_selectTree_File(QString& fileSrc)
 
     if(newFileTree.open(QIODevice::ReadOnly | QFile::Text))
     {
+        ui->ConsoleOut->sendMessage("Opening "+fileSrc+" file...");
+
         FileLoaded* newFileLoaded = new FileLoaded();
         QTextStream newTextFile(&newFileTree);
 
@@ -277,6 +313,12 @@ void MainWindow::on_selectTree_File(QString& fileSrc)
 
         newFile(tabTitle, newFileLoaded->fileContent);
         newHighlighter(scriptsEditor[ui->TabsTextEditor->currentIndex()]->document());
+
+        ui->ConsoleOut->sendSuccess("File Opened!");
+    }
+    else
+    {
+        ui->ConsoleOut->sendInfo("Double clicked "+fileSrc);
     }
 }
 

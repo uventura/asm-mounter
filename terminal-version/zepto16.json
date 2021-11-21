@@ -100,5 +100,5 @@
 	},
 
 	"set_instruction":["addi", "subi", "andi", "ori", "xori", 
-	"beq", "bne", "ble", "bleu", "bgt", "bgtu", "jal", "jalr"]
+	"beq", "bne", "ble", "bleu", "bgt", "bgtu", "jal", "jalr",".word",".byte",".char"]
 }

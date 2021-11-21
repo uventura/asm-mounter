@@ -66,6 +66,7 @@ private:
     FileLoaded* configFile;
 
     Highlighter* hightlighter;
+    Highlighter* outputHighlighter;
 
     QList<QString> highlightedWords;
     QList<CodeEditor*> scriptsEditor;

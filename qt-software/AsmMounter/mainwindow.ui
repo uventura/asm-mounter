@@ -84,31 +84,13 @@ color:rgba(169, 169, 190, 192);</string>
            <property name="currentIndex">
             <number>0</number>
            </property>
-           <widget class="QWidget" name="tab_3">
+           <widget class="QWidget" name="OutputLayout">
             <attribute name="title">
              <string>Output</string>
             </attribute>
             <layout class="QGridLayout" name="gridLayout_2">
              <item row="0" column="0">
-              <widget class="QListView" name="listView">
-               <property name="styleSheet">
-                <string notr="true">background-color:#252627;</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="tab_4">
-            <attribute name="title">
-             <string>Console</string>
-            </attribute>
-            <layout class="QGridLayout" name="gridLayout_3">
-             <item row="0" column="0">
-              <widget class="QTextEdit" name="textEdit">
-               <property name="styleSheet">
-                <string notr="true">background-color:#252627;</string>
-               </property>
-              </widget>
+              <widget class="ConsoleOutput" name="ConsoleOut"/>
              </item>
             </layout>
            </widget>
@@ -292,6 +274,11 @@ color:rgba(169, 169, 190, 192);</string>
    <class>TreeDir</class>
    <extends>QTreeView</extends>
    <header>treedir.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ConsoleOutput</class>
+   <extends>QPlainTextEdit</extends>
+   <header>consoleoutput.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

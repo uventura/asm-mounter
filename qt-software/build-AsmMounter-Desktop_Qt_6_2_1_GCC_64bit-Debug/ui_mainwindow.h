@@ -15,17 +15,16 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QListView>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QSplitter>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
-#include <QtWidgets/QTextEdit>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
+#include "consoleoutput.h"
 #include "treedir.h"
 
 QT_BEGIN_NAMESPACE
@@ -63,12 +62,9 @@ public:
     QSplitter *splitter;
     QTabWidget *TabsTextEditor;
     QTabWidget *StatusProgram;
-    QWidget *tab_3;
+    QWidget *OutputLayout;
     QGridLayout *gridLayout_2;
-    QListView *listView;
-    QWidget *tab_4;
-    QGridLayout *gridLayout_3;
-    QTextEdit *textEdit;
+    ConsoleOutput *ConsoleOut;
     QMenuBar *menubar;
     QMenu *menuFile;
     QMenu *menuEdit;
@@ -169,28 +165,16 @@ public:
         splitter->addWidget(TabsTextEditor);
         StatusProgram = new QTabWidget(splitter);
         StatusProgram->setObjectName(QString::fromUtf8("StatusProgram"));
-        tab_3 = new QWidget();
-        tab_3->setObjectName(QString::fromUtf8("tab_3"));
-        gridLayout_2 = new QGridLayout(tab_3);
+        OutputLayout = new QWidget();
+        OutputLayout->setObjectName(QString::fromUtf8("OutputLayout"));
+        gridLayout_2 = new QGridLayout(OutputLayout);
         gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
-        listView = new QListView(tab_3);
-        listView->setObjectName(QString::fromUtf8("listView"));
-        listView->setStyleSheet(QString::fromUtf8("background-color:#252627;"));
+        ConsoleOut = new ConsoleOutput(OutputLayout);
+        ConsoleOut->setObjectName(QString::fromUtf8("ConsoleOut"));
 
-        gridLayout_2->addWidget(listView, 0, 0, 1, 1);
+        gridLayout_2->addWidget(ConsoleOut, 0, 0, 1, 1);
 
-        StatusProgram->addTab(tab_3, QString());
-        tab_4 = new QWidget();
-        tab_4->setObjectName(QString::fromUtf8("tab_4"));
-        gridLayout_3 = new QGridLayout(tab_4);
-        gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
-        textEdit = new QTextEdit(tab_4);
-        textEdit->setObjectName(QString::fromUtf8("textEdit"));
-        textEdit->setStyleSheet(QString::fromUtf8("background-color:#252627;"));
-
-        gridLayout_3->addWidget(textEdit, 0, 0, 1, 1);
-
-        StatusProgram->addTab(tab_4, QString());
+        StatusProgram->addTab(OutputLayout, QString());
         splitter->addWidget(StatusProgram);
 
         verticalLayout->addWidget(splitter);
@@ -280,8 +264,7 @@ public:
         actionExit->setText(QCoreApplication::translate("MainWindow", "Exit", nullptr));
         actionOpen_Folder->setText(QCoreApplication::translate("MainWindow", "Open Folder", nullptr));
         FolderName->setText(QCoreApplication::translate("MainWindow", "  Current Folder", nullptr));
-        StatusProgram->setTabText(StatusProgram->indexOf(tab_3), QCoreApplication::translate("MainWindow", "Output", nullptr));
-        StatusProgram->setTabText(StatusProgram->indexOf(tab_4), QCoreApplication::translate("MainWindow", "Console", nullptr));
+        StatusProgram->setTabText(StatusProgram->indexOf(OutputLayout), QCoreApplication::translate("MainWindow", "Output", nullptr));
         menuFile->setTitle(QCoreApplication::translate("MainWindow", "File", nullptr));
         menuEdit->setTitle(QCoreApplication::translate("MainWindow", "Edit", nullptr));
         menuOptions->setTitle(QCoreApplication::translate("MainWindow", "Options", nullptr));
