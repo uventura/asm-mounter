@@ -341,3 +341,58 @@ void MainWindow::on_actionSave_triggered()
     saveFile();
 }
 
+
+void MainWindow::on_actionCopy_triggered()
+{
+    int index = ui->TabsTextEditor->currentIndex();
+    scriptsEditor[index]->copy();
+}
+
+
+void MainWindow::on_actionCut_triggered()
+{
+    int index = ui->TabsTextEditor->currentIndex();
+    scriptsEditor[index]->cut();
+}
+
+
+void MainWindow::on_actionUndo_triggered()
+{
+    int index = ui->TabsTextEditor->currentIndex();
+    scriptsEditor[index]->undo();
+}
+
+
+void MainWindow::on_actionRedo_triggered()
+{
+    int index = ui->TabsTextEditor->currentIndex();
+    scriptsEditor[index]->redo();
+}
+
+
+void MainWindow::on_actionPaste_triggered()
+{
+    int index = ui->TabsTextEditor->currentIndex();
+    scriptsEditor[index]->paste();
+}
+
+
+void MainWindow::on_actionClear_Output_triggered()
+{
+    ui->ConsoleOut->clear();
+}
+
+
+void MainWindow::on_actionExit_triggered()
+{
+    QApplication::quit();
+}
+
+void MainWindow::on_actionGenerate_Hex_Output_triggered()
+{
+    int index = ui->TabsTextEditor->currentIndex();
+
+    HexConversor hexConv;
+    hexConv.getConversion(scriptsLoaded[index]->fileContent);
+}
+

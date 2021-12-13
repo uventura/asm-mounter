@@ -12,10 +12,13 @@
 #include <QDebug>
 #include <QThread>
 #include <QTimer>
+#include <QKeySequence>
+#include <QShortcut>
 
 #include "highlighter.h"
 #include "codeeditor.h"
 #include "json.h"
+#include "hexconversor.h"
 
 #include <fstream>
 #include <iostream>
@@ -52,6 +55,22 @@ private slots:
 
     void on_actionSave_triggered();
 
+    void on_actionCopy_triggered();
+
+    void on_actionCut_triggered();
+
+    void on_actionUndo_triggered();
+
+    void on_actionRedo_triggered();
+
+    void on_actionExit_triggered();
+
+    void on_actionPaste_triggered();
+
+    void on_actionClear_Output_triggered();
+
+    void on_actionGenerate_Hex_Output_triggered();
+
 private:
     struct FileLoaded
     {
@@ -73,6 +92,7 @@ private:
     QList<FileLoaded*> scriptsLoaded;
 
     nlohmann::json configJson;
+
 private:
     QString getFileNameFromSrc(QString src);
 

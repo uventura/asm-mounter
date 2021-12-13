@@ -11,6 +11,7 @@ CONFIG += c++11
 SOURCES += \
     codeeditor.cpp \
     consoleoutput.cpp \
+    hexconversor.cpp \
     highlighter.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -19,6 +20,7 @@ SOURCES += \
 HEADERS += \
     codeeditor.h \
     consoleoutput.h \
+    hexconversor.h \
     highlighter.h \
     json.h \
     mainwindow.h \
